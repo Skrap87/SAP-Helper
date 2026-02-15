@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         SAP Kontrollscan LITE
+// @name          SAP Kontrollscan LITE OTA TEST 1
 // @namespace    local.sap.kontrollscan.stop.lite
-// @version      8.9.2-lite
+// @version      8.9.2
 // @description  Lite: indicator + highlight + toast + beep on new/increased errors + ToCount<0 first + row-level fallback + gated Weitere + SPA-safe teardown. No settings.
 // @match        https://vhfiwp61ci.sap.ugfischer.com:44300/*
 // @match        http://localhost:8000/kontrollscan.html

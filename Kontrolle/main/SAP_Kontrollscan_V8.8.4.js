@@ -275,6 +275,7 @@
         top: 14px;
         right: 240px;
         z-index: 99999;
+        pointer-events: auto;
         
       }
       #kcIndicator{

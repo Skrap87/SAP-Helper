@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SAP Kontrollscan Main
 // @namespace    local.sap.kontrollscan.stop
-// @version      8.8.7
+// @version      8.8.8
 // @description  v8.8.2 + FIX: beep only when errors are new/increased (or replaced with same count). + FIX: stable row keys (no re-beep when row indices shift).
 // @match        https://vhfiwp61ci.sap.ugfischer.com:44300/*
 // @match        http://localhost:8000/kontrollscan.html
@@ -386,7 +386,7 @@
 
     indicatorEl = document.createElement('div');
     indicatorEl.id = 'kcIndicator';
-    indicatorEl.title = 'SAP Kontrollscan aktiv (Rechtsklick: Einstellungen)';
+    indicatorEl.title = 'Kontroll Helfer aktiv (Rechtsklick: Einstellungen)';
     indicatorEl.textContent = '⚪';
     layer.appendChild(indicatorEl);
 

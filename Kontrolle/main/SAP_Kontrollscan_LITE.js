@@ -1,11 +1,13 @@
 // ==UserScript==
-// @name         SAP Kontrollscan LITE
+// @name         SAP Kontrollscan LITE (STOP Signal)
 // @namespace    local.sap.kontrollscan.stop.lite
 // @version      8.9.0-lite
 // @description  Lite: indicator + highlight + toast + beep on new/increased errors + ToCount<0 first + row-level fallback + gated Weitere + SPA-safe teardown. No settings.
 // @match        https://vhfiwp61ci.sap.ugfischer.com:44300/*
 // @match        http://localhost:8000/kontrollscan.html
 // @grant        none
+// @updateURL    https://raw.githubusercontent.com/Skrap87/SAP-Helper/main/Kontrolle/main/SAP_Kontrollscan_LITE.user.js
+// @downloadURL  https://raw.githubusercontent.com/Skrap87/SAP-Helper/main/Kontrolle/main/SAP_Kontrollscan_LITE.user.js
 // ==/UserScript==
 
 (function () {

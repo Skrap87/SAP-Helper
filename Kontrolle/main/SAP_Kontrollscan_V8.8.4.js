@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SAP Kontrollscan Main
 // @namespace    local.sap.kontrollscan.stop
-// @version      8.8.6
+// @version      8.8.7
 // @description  v8.8.2 + FIX: beep only when errors are new/increased (or replaced with same count). + FIX: stable row keys (no re-beep when row indices shift).
 // @match        https://vhfiwp61ci.sap.ugfischer.com:44300/*
 // @match        http://localhost:8000/kontrollscan.html
@@ -778,19 +778,16 @@
 
     if (baseState === 'WHITE') {
       indicatorEl.textContent = '⚪';
-      indicatorEl.style.cursor = 'default';
       stopPulseSync();
       return;
     }
     if (baseState === 'YELLOW') {
       indicatorEl.textContent = '🟡';
-      indicatorEl.style.cursor = 'default';
       stopPulseSync();
       return;
     }
 
     indicatorEl.textContent = hasErrorOverlay ? '🔴' : '🟢';
-    indicatorEl.style.cursor = hasErrorOverlay ? 'pointer' : 'default';
   }
 
   /* ===================== WEITERE ===================== */

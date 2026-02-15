@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         SAP Kontrollscan LITE (STOP Signal)
+// @name         SAP Kontrollscan LITE
 // @namespace    local.sap.kontrollscan.stop.lite
 // @version      8.9.0-lite
 // @description  Lite: indicator + highlight + toast + beep on new/increased errors + ToCount<0 first + row-level fallback + gated Weitere + SPA-safe teardown. No settings.

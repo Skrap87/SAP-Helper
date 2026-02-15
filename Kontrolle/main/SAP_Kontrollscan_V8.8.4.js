@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SAP Kontrollscan V8.8.4
 // @namespace    local.sap.kontrollscan.stop
-// @version      8.8.4
+// @version      8.8.5
 // @description  v8.8.2 + FIX: beep only when errors are new/increased (or replaced with same count). + FIX: stable row keys (no re-beep when row indices shift).
 // @match        https://vhfiwp61ci.sap.ugfischer.com:44300/*
 // @match        http://localhost:8000/kontrollscan.html

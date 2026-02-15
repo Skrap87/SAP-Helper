@@ -280,7 +280,7 @@
       #kcIndicator{
         pointer-events: auto;
         font-size: 18px;
-        cursor: default;
+        cursor: pointer;
         user-select: none;
         opacity: 0.32;
         transition: opacity .15s ease, transform .15s ease;

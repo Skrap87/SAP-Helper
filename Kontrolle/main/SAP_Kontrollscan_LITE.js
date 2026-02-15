@@ -6,8 +6,8 @@
 // @match        https://vhfiwp61ci.sap.ugfischer.com:44300/*
 // @match        http://localhost:8000/kontrollscan.html
 // @grant        none
-// @updateURL    https://raw.githubusercontent.com/Skrap87/SAP-Helper/main/Kontrolle/main/SAP_Kontrollscan_LITE.user.js
-// @downloadURL  https://raw.githubusercontent.com/Skrap87/SAP-Helper/main/Kontrolle/main/SAP_Kontrollscan_LITE.user.js
+// @updateURL    https://raw.githubusercontent.com/Skrap87/SAP-Helper/main/Kontrolle/main/SAP_Kontrollscan_LITE.js
+// @downloadURL  https://raw.githubusercontent.com/Skrap87/SAP-Helper/main/Kontrolle/main/SAP_Kontrollscan_LITE.js
 // ==/UserScript==
 
 (function () {

@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         SAP Kontrollscan Main
 // @namespace    local.sap.kontrollscan.stop
-// @version      8.8.8
-// @description  v8.8.2 + FIX: beep only when errors are new/increased (or replaced with same count). + FIX: stable row keys (no re-beep when row indices shift).
+// @version      8.8.8-fixWeitereReset
+// @description  v8.8.2 + FIX: beep only when errors are new/increased (or replaced with same count). + FIX: stable row keys (no re-beep when row indices shift). + FIX: reset Weitere burst limiter on HU change / timeout.
 // @match        https://vhfiwp61ci.sap.ugfischer.com:44300/*
 // @match        http://localhost:8000/kontrollscan.html
 // @grant        none
@@ -192,6 +192,10 @@
   let rampTimer = null;
   let lastWeitereAt = 0;
   let burstsDone = 0;
+  // ✅ FIX: burstsDone не должен 'убивать' Weitere навсегда
+  // Сбрасываем лимит при смене HU и при долгой паузе
+  let rampHuKey = '';
+  const BURSTS_RESET_AFTER_MS = 12 * 60 * 1000; // 12 минут
   let rampNoGrowStreak = 0;
   let lastRowCountSeen = 0;
   let weitereRunning = false;
@@ -1218,6 +1222,12 @@
     lastActiveErrorCount = 0;
     lastErrorSignature = '';
     lastErrorAt = 0;
+
+    // ✅ FIX: при уходе с HU не переносим лимит догрузки на следующий заход
+    burstsDone = 0;
+    lastWeitereAt = 0;
+    rampNoGrowStreak = 0;
+    lastRowCountSeen = 0;
   }
 
   function tick() {
@@ -1228,6 +1238,24 @@
     ensureIndicator();
 
     const baseState = getBaseScreenState();
+
+    // ✅ FIX: если HU сменился — разрешаем новую сессию догрузки "Weitere"
+    // (иначе burstsDone накапливается и блокирует Weitere до F5)
+    const huNow = getHuIdFromTitle();
+    const newKey = `${baseState}::${huNow}`;
+    if (newKey !== rampHuKey) {
+      rampHuKey = newKey;
+      burstsDone = 0;
+      lastWeitereAt = 0;
+      rampNoGrowStreak = 0;
+      lastRowCountSeen = 0;
+      stopRamp();
+    }
+
+    // ✅ FIX: если долго не догружали — тоже сбрасываем лимит
+    if (burstsDone > 0 && lastWeitereAt > 0 && (now() - lastWeitereAt) > BURSTS_RESET_AFTER_MS) {
+      burstsDone = 0;
+    }
 
     if (baseState === 'GREEN') setupObserverForTable();
     else detachObserver();

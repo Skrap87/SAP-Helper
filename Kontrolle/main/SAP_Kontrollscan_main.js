@@ -969,6 +969,12 @@
     return n;
   }
 
+  function formatNegToCountKeyValue(n) {
+    if (!Number.isFinite(n) || n >= 0) return '';
+    const absFixed = Math.abs(n).toFixed(3);
+    return `-${absFixed}`;
+  }
+
   /* ===================== HIGHLIGHT HELPERS ===================== */
 
   function applyErrorMarkToRow(tr, on) {
@@ -1057,6 +1063,7 @@
 
       // ✅ 1) ToCount анализ на уровне строки
       let rowHasNeg = false;
+      let rowMinNeg = null;
       let rowToCountParsed = false;
 
       for (const node of nodes) {
@@ -1064,7 +1071,10 @@
         if (n !== null) {
           rowToCountParsed = true;
           parsedAny++;
-          if (n < 0) rowHasNeg = true;
+          if (n < 0) {
+            rowHasNeg = true;
+            if (rowMinNeg === null || n < rowMinNeg) rowMinNeg = n;
+          }
         }
       }
 
@@ -1079,7 +1089,11 @@
       // ✅ FIX: вместо индекса строки используем стабильный ключ по содержимому строки
       const rk = stableRowKey(tr);
 
-      if (rowHasNeg) { toCountNegCount++; negRowKeys.push(rk); }
+      if (rowHasNeg) {
+        toCountNegCount++;
+        const negNorm = formatNegToCountKeyValue(rowMinNeg);
+        negRowKeys.push(`${rk}=${negNorm}`);
+      }
       if (rowHasDomErr) { domTextCount++; domRowKeys.push(rk); }
 
       const mark = rowHasNeg || rowHasDomErr;

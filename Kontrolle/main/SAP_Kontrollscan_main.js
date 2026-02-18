@@ -1,10 +1,9 @@
 // ==UserScript==
 // @name         SAP Kontrollscan Main
 // @namespace    local.sap.kontrollscan.stop
-// @version      9.0.1
-// @description  v9.0.1 + FIX: beep only when errors are new/increased (or replaced with same count). + FIX: stable row keys (no re-beep when row indices shift). + FIX: reset Weitere burst limiter on HU change / timeout.
+// @version      9.0.2
+// @description  v9.0.2 + FIX: beep only when errors are new/increased (or replaced with same count). + FIX: stable row keys (no re-beep when row indices shift). + FIX: reset Weitere burst limiter on HU change / timeout.
 // @match        https://vhfiwp61ci.sap.ugfischer.com:44300/*
-// @match        http://localhost:8000/kontrollscan.html
 // @grant        none
 // @updateURL    https://raw.githubusercontent.com/Skrap87/SAP-Helper/main/Kontrolle/main/SAP_Kontrollscan_main.js
 // @downloadURL  https://raw.githubusercontent.com/Skrap87/SAP-Helper/main/Kontrolle/main/SAP_Kontrollscan_main.js

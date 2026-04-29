@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HU Counter Diagnostic</title>
+  <style>
+    body { font-family: Segoe UI, sans-serif; min-width: 380px; padding: 12px; }
+    .row { display: flex; gap: 8px; margin-bottom: 10px; }
+    button { padding: 8px 10px; }
+    pre { max-height: 300px; overflow: auto; background: #f4f4f4; padding: 8px; border-radius: 6px; }
+    #status { font-size: 12px; margin-bottom: 8px; color: #333; }
+  </style>
+</head>
+<body>
+  <h3>HU Counter Diagnostic</h3>
+  <div id="status">Проверка...</div>
+  <div class="row">
+    <button id="runProbe">Запустить executeScript probe</button>
+    <button id="refreshHistory">Обновить историю</button>
+  </div>
+  <pre id="history">Загрузка...</pre>
+  <script src="popup.js"></script>
+</body>
+</html>

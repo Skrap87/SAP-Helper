@@ -22,9 +22,15 @@
     "#application-ZEWMGIP-display-component---Packing--messageToolbar"
   ];
 
+  if (window.__huDiagInstalled) {
+    return;
+  }
+  window.__huDiagInstalled = true;
+
   const allResults = [];
   const runId = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
   ensureToastContainer();
+  console.info("[HU-DIAG] content script started", { href: location.href, frame: window.top === window ? "top" : "iframe" });
   runDiagnostics("initial");
 
   window.addEventListener("hashchange", () => runDiagnostics("hashchange"), { passive: true });
@@ -68,7 +74,11 @@
     }
 
     console.table(allResults.slice(-methods.length));
-    chrome.runtime.sendMessage({ type: HISTORY_EVENT, results: allResults.slice(-methods.length) });
+    chrome.runtime.sendMessage({ type: HISTORY_EVENT, results: allResults.slice(-methods.length) }, () => {
+      if (chrome.runtime.lastError) {
+        console.warn("[HU-DIAG] save results failed", chrome.runtime.lastError.message);
+      }
+    });
   }
 
   async function safeRun(fn) {
@@ -87,7 +97,8 @@
         timestamp: new Date().toISOString(),
         trigger: result.trigger,
         error: null,
-        runId
+        runId,
+        frameType: window.top === window ? "top" : "iframe"
       };
     } catch (error) {
       return {
@@ -102,7 +113,8 @@
         timestamp: new Date().toISOString(),
         trigger: "error",
         error: String(error?.message || error),
-        runId
+        runId,
+        frameType: window.top === window ? "top" : "iframe"
       };
     }
   }

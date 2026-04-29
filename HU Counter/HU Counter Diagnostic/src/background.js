@@ -19,7 +19,23 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 
   if (message.type === "HU_DIAG_RUN_EXECUTESCRIPT") {
-    void runExecuteScriptOnTab(sender.tab?.id).then((result) => sendResponse({ ok: true, result }));
+    void runExecuteScriptOnTab(sender.tab?.id).then(async (result) => {
+      await saveResults([{
+        methodName: "HU detect: chrome.scripting.executeScript",
+        success: Boolean(result.success),
+        hu: result.hu || null,
+        durationMs: 0,
+        nodeCount: 0,
+        charCount: result.charCount || 0,
+        url: result.url || null,
+        title: result.title || null,
+        timestamp: result.timestamp || new Date().toISOString(),
+        trigger: "popup_probe",
+        error: result.error || null,
+        runId: `probe-${Date.now()}`
+      }]);
+      sendResponse({ ok: true, result });
+    });
     return true;
   }
 

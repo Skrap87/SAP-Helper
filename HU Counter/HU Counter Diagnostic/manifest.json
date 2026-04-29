@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "HU Counter Diagnostic",
+  "version": "0.1.0",
+  "description": "Diagnostic build to test page detection and HU extraction methods on SAP pages.",
+  "permissions": [
+    "storage",
+    "tabs",
+    "scripting",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://vhfiwp61ci.sap.ugfischer.com/*"
+  ],
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "action": {
+    "default_title": "HU Counter Diagnostic",
+    "default_popup": "popup/popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://vhfiwp61ci.sap.ugfischer.com/sap/bc/ui2/flp*"
+      ],
+      "js": [
+        "src/content.js"
+      ],
+      "css": [
+        "src/toast.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

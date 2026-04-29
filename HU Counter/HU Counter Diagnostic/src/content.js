@@ -3,6 +3,8 @@
 
   const METHOD_TIMEOUTS = [500, 1500, 3000];
   const HISTORY_EVENT = "HU_DIAG_SAVE_RESULTS";
+  const legacySuccessRe = /wurde erfolgreich abgeschlossen/i;
+
   const huPatterns = [
     /^HU '(\d+)' wurde erfolgreich abgeschlossen\.$/i,
     /HU\s*['\"]?(\d+)['\"]?/i,
@@ -49,6 +51,16 @@
   });
   observer.observe(document.documentElement || document.body, { childList: true, subtree: true });
 
+  // Legacy userscript used frequent rescans; keep lightweight bounded retries for parity.
+  let legacyTickCount = 0;
+  const legacyInterval = window.setInterval(() => {
+    legacyTickCount += 1;
+    runDiagnostics(`legacy_interval_${legacyTickCount}`);
+    if (legacyTickCount >= 10) {
+      window.clearInterval(legacyInterval);
+    }
+  }, 400);
+
   async function runDiagnostics(trigger) {
     const methods = [
       () => checkPageByLocationHref(trigger),
@@ -64,6 +76,7 @@
       () => findHuBySelectors(trigger),
       () => findHuByTreeWalker(trigger),
       () => findHuByNormalizedText(trigger),
+      () => findHuByLegacyMessageStrip(trigger),
       () => runExecuteScriptMethod(trigger)
     ];
 
@@ -212,6 +225,29 @@
   function findHuByNormalizedText(trigger) {
     const normalized = normalizeText(document.body?.innerText || "");
     return huFromText("HU detect: normalized text + regex set", normalized, 0, trigger);
+  }
+
+
+  function findHuByLegacyMessageStrip(trigger) {
+    const selector = '.sapMMsgStrip, .sapMMessageToast, [role="alert"], [role="status"], [aria-live="assertive"], [aria-live="polite"]';
+    const nodes = Array.from(document.querySelectorAll(selector));
+    let combined = '';
+    for (const el of nodes) {
+      const text = normalizeText(el.innerText || el.textContent || '');
+      if (!text || !legacySuccessRe.test(text)) {
+        continue;
+      }
+      combined += ` ${text}`;
+    }
+
+    const hu = extractHuLegacy(combined);
+    return buildPageResult('HU detect: LEGACY MessageStrip/Toast observer style', Boolean(hu), hu, nodes.length, combined.length, trigger);
+  }
+
+  function extractHuLegacy(text) {
+    const source = String(text || '');
+    const m = source.match(/\bHU\b[^0-9]*([0-9]{8,})/i);
+    return m ? m[1] : null;
   }
 
   async function runExecuteScriptMethod(trigger) {

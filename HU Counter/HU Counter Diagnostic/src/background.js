@@ -18,6 +18,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
   }
 
+  if (message.type === "HU_DIAG_INJECT_NOW") {
+    void injectDiagnosticContentScript(sender.tab?.id).then((result) => sendResponse(result));
+    return true;
+  }
+
   if (message.type === "HU_DIAG_RUN_EXECUTESCRIPT") {
     void runExecuteScriptOnTab(sender.tab?.id).then(async (result) => {
       await saveResults([{
@@ -86,6 +91,19 @@ async function runExecuteScriptOnTab(senderTabId) {
   });
 
   return injection?.result || { methodName: "chrome.scripting.executeScript", success: false, error: "No result" };
+}
+
+
+
+async function injectDiagnosticContentScript(senderTabId) {
+  const tabId = senderTabId || (await getActiveTabId());
+  if (!tabId) {
+    return { ok: false, error: "No active tab" };
+  }
+
+  await chrome.scripting.insertCSS({ target: { tabId, allFrames: true }, files: ["src/toast.css"] });
+  await chrome.scripting.executeScript({ target: { tabId, allFrames: true }, files: ["src/content.js"] });
+  return { ok: true };
 }
 
 async function getActiveTabId() {

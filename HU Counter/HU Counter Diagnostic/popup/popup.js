@@ -2,6 +2,7 @@
 
 document.getElementById("refreshHistory").addEventListener("click", loadHistory);
 document.getElementById("runProbe").addEventListener("click", runProbe);
+document.getElementById("injectNow").addEventListener("click", injectNow);
 document.addEventListener("DOMContentLoaded", async () => {
   await renderStatus();
   await loadHistory();
@@ -10,7 +11,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function renderStatus() {
   const status = document.getElementById("status");
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  status.textContent = tab ? `Активная вкладка: ${tab.url || "-"}` : "Активная вкладка не найдена";
+  status.textContent = tab ? `Активная вкладка:\n${tab.url || "-"}` : "Активная вкладка не найдена";
+}
+
+async function injectNow() {
+  const status = document.getElementById("status");
+  status.textContent = "Принудительно внедряю content.js + toast.css во все фреймы...";
+  const response = await chrome.runtime.sendMessage({ type: "HU_DIAG_INJECT_NOW" });
+  status.textContent = response?.ok
+    ? "Диагностика внедрена. Вернитесь на страницу и проверьте toast/console.table."
+    : `Inject failed: ${response?.error || "unknown"}`;
 }
 
 async function runProbe() {
@@ -32,5 +42,5 @@ async function loadHistory() {
   }
 
   const history = Array.isArray(response.history) ? response.history.slice(0, 30) : [];
-  out.textContent = history.length ? JSON.stringify(history, null, 2) : "История пуста. Открой SAP страницу и дождись toast/логов.";
+  out.textContent = history.length ? JSON.stringify(history, null, 2) : "История пуста. Нажмите 'Принудительно запустить диагностику', затем обновите историю.";
 }

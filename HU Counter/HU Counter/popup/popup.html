@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HU Counter</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main>
+      <header class="header">
+        <div>
+          <div class="eyebrow">HU Counter</div>
+          <h1 id="shiftName">Schicht</h1>
+        </div>
+        <div id="statusPill" class="statusPill outside">-</div>
+      </header>
+
+      <section class="summary">
+        <div>
+          <div class="label">Erreicht / Ziel</div>
+          <div id="count" class="count">0 / 0</div>
+        </div>
+        <div class="summarySide">
+          <strong id="forecast">-</strong>
+        </div>
+      </section>
+
+      <section class="chartPanel" aria-label="Schichtfortschritt">
+        <div id="achievementChart" class="chart"></div>
+        <div class="legend">
+          <span><i class="legendActual"></i>Ist</span>
+          <span><i class="legendBreak"></i>Pause</span>
+        </div>
+      </section>
+
+      <section class="metrics">
+        <div>
+          <span>Tempo</span>
+          <strong id="pace">-</strong>
+        </div>
+        <div>
+          <span>Extra</span>
+          <strong id="extra">-</strong>
+        </div>
+        <div>
+          <span>Letzte HU</span>
+          <strong id="lastHu">-</strong>
+        </div>
+        <div>
+          <span>Letztes Ereignis</span>
+          <strong id="lastCompletedAt">-</strong>
+        </div>
+      </section>
+
+      <footer class="versionRow">
+        <span>HU Counter</span>
+        <span id="extensionVersion">v-</span>
+      </footer>
+    </main>
+    <script src="../src/shift-math.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

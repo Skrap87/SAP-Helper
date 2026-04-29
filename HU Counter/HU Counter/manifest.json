@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "HU Counter",
+  "version": "0.2.3",
+  "description": "Counts successfully completed HUs on the Packplatz dashboard.",
+  "permissions": ["storage", "tabs"],
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "action": {
+    "default_title": "HU Counter",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon-16-disabled.png",
+      "32": "icons/icon-32-disabled.png",
+      "48": "icons/icon-48-disabled.png",
+      "128": "icons/icon-128-disabled.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://vhfiwp61ci.sap.ugfischer.com/sap/bc/ui2/flp*"],
+      "js": ["src/page-status.js", "src/detector.js", "src/content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

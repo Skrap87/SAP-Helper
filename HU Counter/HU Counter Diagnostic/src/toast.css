@@ -1,0 +1,30 @@
+#hu-diag-toast-container {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 2147483647;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: min(520px, 92vw);
+  pointer-events: none;
+}
+
+.hu-diag-toast {
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  font: 12px/1.4 "Segoe UI", Arial, sans-serif;
+  opacity: 0;
+  transform: translateY(-6px);
+  animation: hu-toast-in 150ms ease forwards;
+  word-break: break-word;
+}
+
+.hu-diag-toast.success { background: #0f7b0f; }
+.hu-diag-toast.fail { background: #7b0f0f; }
+
+@keyframes hu-toast-in {
+  to { opacity: 1; transform: translateY(0); }
+}
